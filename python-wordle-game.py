@@ -2,7 +2,7 @@ from string import ascii_uppercase
 from random import choice
 
 alphabet = ascii_uppercase
-alphabet_display = [f' {i} ' for i in alphabet]
+alphabet_display = [i for i in alphabet]
 row = 0
 reset = '\033[0m'
 grey = '\033[1;30m'
@@ -13,8 +13,8 @@ purple = '\033[0;35m'
 def show_board():
     print('\n')
     for row in board: 
-        print(''.join(row))
-    print('\n\n',''.join(alphabet_display),'\n')
+        print(*row)
+    print('\n\n',*alphabet_display,'\n')
 
 def set_color_and_upper(text, color):
     return f'{color}{text.upper()}{reset}'
@@ -26,7 +26,7 @@ def loadWords():
         wordList.append(line.strip().lower())
     return wordList
 
-board = [[' _ ' for j in range(5)] for i in range(6)]
+board = [['_' for j in range(5)] for i in range(6)]
 word_list = loadWords()
 answer = choice(word_list)
 
@@ -46,16 +46,15 @@ while row < 6:
     correct_count = 0
     temp_answer = list(answer)
     for index, letter in enumerate(guess):
-        spaced_letter = f' {letter} '
         if temp_answer.count(letter) > 0:
             temp_answer.remove(letter)
             if letter == answer[index]:
-                new_letter = set_color_and_upper(spaced_letter, green)
+                new_letter = set_color_and_upper(letter, green)
                 correct_count += 1
             else:
-                new_letter = set_color_and_upper(spaced_letter, yellow)
+                new_letter = set_color_and_upper(letter, yellow)
         else:
-            new_letter = set_color_and_upper(spaced_letter, grey)
+            new_letter = set_color_and_upper(letter, grey)
         
         board[row][index] = new_letter
         alphabet_display[alphabet.index(letter.upper())] = new_letter
