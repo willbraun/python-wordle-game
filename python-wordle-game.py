@@ -1,5 +1,6 @@
 from string import ascii_uppercase
 from random import choice
+from english_words import english_words_lower_alpha_set
 
 alphabet = ascii_uppercase
 alphabet_display = [i for i in alphabet]
@@ -19,16 +20,17 @@ def show_board():
 def set_color_and_upper(text, color):
     return f'{color}{text.upper()}{reset}'
 
-def loadWords():
-    inFile = open('word-list.txt', 'r')
+def loadGuessWords():
+    inFile = open('guess-word-list.txt', 'r')
     wordList = []
     for line in inFile:
         wordList.append(line.strip().lower())
     return wordList
 
 board = [['_' for j in range(5)] for i in range(6)]
-word_list = loadWords()
-answer = choice(word_list)
+guess_word_list = loadGuessWords()
+answer_word_list = [word for word in english_words_lower_alpha_set if len(word) == 5]
+answer = choice(answer_word_list)
 
 show_board()
 
@@ -39,7 +41,7 @@ while row < 6:
         print("Word must be exactly 5 letters, please enter a new word")
         continue
 
-    if not guess in word_list:
+    if not guess in guess_word_list:
         print('Invalid word, try again')
         continue
 
