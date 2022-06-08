@@ -1,36 +1,36 @@
+from string import ascii_uppercase
 from random import choice
 
-board = [["_","_","_","_","_"] for i in range(6)]
+
+alphabet = ascii_uppercase
+alphabet_display = [f' {i} ' for i in alphabet]
 row = 0
 reset = '\033[0m'
-grey = '\033[1;30m'
-green = '\033[1;32m'
-yellow = '\033[1;33m'
-purple = "\033[0;35m"
-
-def space_out(x):
-    return ' '.join(x)
+grey = '\u001b[0;40m'
+green = '\u001b[42m'
+yellow = '\u001b[43m'
+purple = '\033[0;35m'
 
 def show_board():
-    for row in board:
-        print(space_out(row))
+    print('\n')
+    for row in board: 
+        print(''.join(row))
+    print('\n\n',''.join(alphabet_display),'\n')
 
-def set_color(text, color):
-    return f'{color}{text}{reset}'
+def set_color_and_upper(text, color):
+    return f'{color}{text.upper()}{reset}'
 
 def loadWords():
-    # print("Loading word list from file...")
     inFile = open('word-list.txt', 'r')
     wordList = []
     for line in inFile:
         wordList.append(line.strip().lower())
-    # print("  ", len(wordList), "words loaded.")
     return wordList
 
-# words = ['puree', 'grape', 'fishy', 'start', 'large', 'small', 'extra', 'tacos', 'plump', 'wiley', 'paled', 'story']
+board = [[set_color_and_upper(' _ ', grey) for j in range(5)] for i in range(6)]
 word_list = loadWords()
 answer = choice(word_list)
-        
+
 show_board()
 
 while row < 6:
@@ -40,20 +40,26 @@ while row < 6:
         print("Word must be exactly 5 letters, please enter a new word")
         continue
 
-    # check if entered word is a valid word
+    if not guess in word_list:
+        print('Invalid word, try again')
+        continue
 
     correct_count = 0
     temp_answer = list(answer)
     for index, letter in enumerate(guess):
+        spaced_letter = f' {letter} '
         if letter == answer[index]:
-            board[row][index] = set_color(letter.upper(), green)
+            new_letter = set_color_and_upper(spaced_letter, green)
             temp_answer.remove(letter)
             correct_count += 1
         elif temp_answer.count(letter) > 0:
-            board[row][index] = set_color(letter.upper(), yellow)
+            new_letter = set_color_and_upper(spaced_letter, yellow)
             temp_answer.remove(letter)
         else:
-            board[row][index] = set_color(letter.upper(), grey)
+            new_letter = set_color_and_upper(spaced_letter, grey)
+        
+        board[row][index] = new_letter
+        alphabet_display[alphabet.index(letter.upper())] = new_letter
     
     show_board()
     
@@ -62,7 +68,7 @@ while row < 6:
         break
 
     if row == 5:
-        print(f'Game over. The word was {set_color(answer.upper(), purple)}.')
+        print(f'Game over. The word was {set_color_and_upper(answer, purple)}.')
         break
 
     row += 1
