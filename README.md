@@ -4,7 +4,7 @@ Play Wordle in your terminal, as many times per day as you would like!
 
 ## How to play
 
-Download the directory and run the file with Python in your termainl to play Wordle. See example below for Python 3.
+Download the directory and run the file with Python in your terminal to play Wordle. See example below for Python 3.
 
 $ python3 python-wordle-game.py 
 
