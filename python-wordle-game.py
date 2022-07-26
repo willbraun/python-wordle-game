@@ -28,8 +28,8 @@ def loadGuessWords():
     return wordList
 
 board = [['_' for j in range(5)] for i in range(6)]
-guess_word_list = loadGuessWords()
 answer_word_list = [word for word in english_words_lower_alpha_set if len(word) == 5]
+guess_word_list = list(set(loadGuessWords() + answer_word_list))
 answer = choice(answer_word_list)
 
 show_board()
